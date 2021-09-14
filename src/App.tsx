@@ -1,7 +1,18 @@
-import React from "react";
+import styled from "styled-components";
+import "./index.css";
 
-function App() {
-  return <div className="App">test</div>;
-}
+import { Form } from "./Form";
 
-export default App;
+const Container = styled.div`
+  display: flex;
+  margin: 150px auto 0 auto;
+  justify-content: center;
+`;
+
+export const App = () => {
+  return (
+    <Container>
+      <Form />
+    </Container>
+  );
+};
