@@ -9,4 +9,7 @@ export type FormItemType = {
 
 export type ItemsType = "email" | "phone" | "link";
 
-export type ActionType = { type: "addFormItem" } | { type: "deleteFormItem" };
+export type ActionType =
+  | { type: "addFormItem" }
+  | { type: "deleteFormItem" }
+  | { type: "changeSelect"; value: { type: ItemsType; index: number } };

@@ -1,9 +1,10 @@
+import React from "react";
 import { useReducer } from "react";
 import styled from "styled-components";
 import { FormItem } from "./FormItem";
 import { ActionType, State } from "./types";
 
-const FormWrap = styled.div`
+const FormWrap = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,7 +29,7 @@ const initialState: State = {
 
 const getForm = (state: State) => {
   return state.formItems.map(({ type, value }, index) => {
-    return <FormItem type={type} value={value} key={index} />;
+    return <FormItem type={type} value={value} index={index} key={index} />;
   });
 };
 
@@ -40,14 +41,40 @@ export const reducer = (state: State, action: ActionType): State => {
     case "deleteFormItem": {
       return state;
     }
+    case "changeSelect": {
+      const { type: newType, index } = action.value;
+      console.log(state.formItems[index]);
+
+      const newFormItems = state.formItems.map(({ type, value }, itemIndex) => {
+        if (itemIndex === index) {
+          return { type: newType, value };
+        } else return { type, value };
+      });
+
+      const newState = {
+        ...state,
+        formItems: newFormItems,
+      };
+
+      console.log(newState);
+      return newState;
+    }
     default: {
       return state;
     }
   }
 };
 
+export const FormDispatch = React.createContext<React.Dispatch<ActionType>>(
+  undefined as any
+);
+
 export const Form = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  return <FormWrap>{getForm(state)}</FormWrap>;
+  return (
+    <FormDispatch.Provider value={dispatch}>
+      <FormWrap>{getForm(state)}</FormWrap>
+    </FormDispatch.Provider>
+  );
 };
