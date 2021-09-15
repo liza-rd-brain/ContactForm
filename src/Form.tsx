@@ -23,6 +23,7 @@ const initialState: State = {
     {
       id: INITIAL_ID,
       type: "email",
+      value: "",
     },
     /*     {
       id: INITIAL_COUNTER + 1,

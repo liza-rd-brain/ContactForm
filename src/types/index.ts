@@ -6,7 +6,7 @@ export type State = {
 export type FormItemType = {
   id: number;
   type: SelectType;
-  value?: string;
+  value: string;
 };
 
 export type SelectType = "email" | "phone" | "link";
