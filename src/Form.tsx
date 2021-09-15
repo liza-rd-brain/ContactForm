@@ -19,7 +19,7 @@ const FormWrap = styled.form`
 `;
 
 const initialState: State = {
-  formItems: [
+  formItemList: [
     {
       id: INITIAL_ID,
       type: "email",
@@ -33,11 +33,11 @@ const initialState: State = {
       type: "email",
     }, */
   ],
-  counter: INITIAL_COUNTER,
+  counterId: INITIAL_COUNTER,
 };
 
 const getForm = (state: State) => {
-  return state.formItems.map(({ id, type, value }, index) => {
+  return state.formItemList.map(({ id, type, value }, index) => {
     return (
       <FormItem id={id} type={type} value={value} index={index} key={id} />
     );
@@ -50,67 +50,66 @@ export const reducer = (state: State, action: ActionType): State => {
       /**
        *  Element number below which need to add a new one?
        */
-
-      /**
-       * Need to find out which element is current
-       * Then insert after it new Form
-       *
-       */
       const upperElementId = action.value;
 
-      const newFormItems = state.formItems.reduce<FormItemType[]>(
-        (prevFormItems, currFormItem) => {
+      const newformItemList = state.formItemList.reduce<FormItemType[]>(
+        (prevFormItemList, currFormItem) => {
           const { id } = currFormItem;
 
           if (id === upperElementId) {
             const newFormItem: FormItemType = {
-              id: state.counter,
+              id: state.counterId,
               type: currFormItem.type,
               value: currFormItem.value,
             };
 
-            return [...prevFormItems, currFormItem, newFormItem];
+            return [...prevFormItemList, currFormItem, newFormItem];
           } else {
-            return [...prevFormItems, currFormItem];
+            return [...prevFormItemList, currFormItem];
           }
         },
         []
       );
 
-      console.log(newFormItems);
-
-      return { ...state, formItems: newFormItems, counter: state.counter++ };
+      return {
+        ...state,
+        formItemList: newformItemList,
+        counterId: state.counterId++,
+      };
     }
+
     case "deleteFormItem": {
       /**
        *  Element number to be removed
        */
       const currId = action.value;
 
-      const newFormItems = state.formItems.filter((formItem, itemIndex) => {
+      const newformItemList = state.formItemList.filter((formItem) => {
         const { id } = formItem;
         return id !== currId;
       });
 
-      const newState = {
+      return {
         ...state,
-        formItems: newFormItems,
+        formItemList: newformItemList,
       };
-
-      return newState;
     }
+
     case "changeSelect": {
+      //TODO: Need to change index to id for changing select
       const { type: newType, index } = action.value;
 
-      const newFormItems = state.formItems.map((formItemsElem, itemIndex) => {
-        if (itemIndex === index) {
-          return { ...formItemsElem, type: newType };
-        } else return formItemsElem;
-      });
+      const newformItemList = state.formItemList.map(
+        (formItemElem, itemIndex) => {
+          if (itemIndex === index) {
+            return { ...formItemElem, type: newType };
+          } else return formItemElem;
+        }
+      );
 
       const newState = {
         ...state,
-        formItems: newFormItems,
+        formItemList: newformItemList,
       };
 
       return newState;

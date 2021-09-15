@@ -1,18 +1,18 @@
 export type State = {
-  formItems: FormItemType[];
-  counter: number;
+  formItemList: FormItemType[];
+  counterId: number;
 };
 
 export type FormItemType = {
   id: number;
-  type: ItemsType;
+  type: SelectType;
   value?: string;
 };
 
-export type ItemsType = "email" | "phone" | "link";
+export type SelectType = "email" | "phone" | "link";
 
 export type ButtonControllerType = "addFormItem" | "deleteFormItem";
 
 export type ActionType =
   | { type: ButtonControllerType; value: number }
-  | { type: "changeSelect"; value: { type: ItemsType; index: number } };
+  | { type: "changeSelect"; value: { type: SelectType; index: number } };

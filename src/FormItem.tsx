@@ -1,4 +1,4 @@
-import { ButtonControllerType, FormItemType, ItemsType } from "./types";
+import { ButtonControllerType, FormItemType, SelectType } from "./types";
 
 import styled from "styled-components";
 import { css } from "styled-components";
@@ -40,7 +40,7 @@ const Button = styled.button`
 export const FormItem = (props: FormItemPropsType) => {
   const dispatch = useContext(FormDispatch);
 
-  function getInputType(itemType: ItemsType) {
+  function getInputType(itemType: SelectType) {
     switch (itemType) {
       case "email": {
         return "email";
@@ -64,7 +64,7 @@ export const FormItem = (props: FormItemPropsType) => {
           dispatch({
             type: "changeSelect",
             value: {
-              type: event.target.value as ItemsType,
+              type: event.target.value as SelectType,
               index: props.index,
             },
           });
