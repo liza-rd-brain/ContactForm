@@ -21,13 +21,21 @@ const initialState: State = {
       id: INITIAL_COUNTER,
       type: "email",
     },
+    {
+      id: INITIAL_COUNTER + 1,
+      type: "email",
+    },
+    {
+      id: INITIAL_COUNTER + 2,
+      type: "email",
+    },
   ],
 };
 
 const getForm = (state: State) => {
   return state.formItems.map(({ id, type, value }, index) => {
     return (
-      <FormItem id={id} type={type} value={value} index={index} key={index} />
+      <FormItem id={id} type={type} value={value} index={index} key={id} />
     );
   });
 };
@@ -46,10 +54,11 @@ export const reducer = (state: State, action: ActionType): State => {
       /**
        *  Element number to be removed
        */
-      const index = action.value;
+      const currId = action.value;
 
       const newFormItems = state.formItems.filter((formItem, itemIndex) => {
-        return itemIndex !== index;
+        const { id } = formItem;
+        return id !== currId;
       });
 
       const newState = {
