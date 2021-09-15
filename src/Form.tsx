@@ -58,7 +58,7 @@ export const reducer = (state: State, action: ActionType): State => {
        */
       const upperElementId = action.value;
 
-      const newFormItems = state.formItems.reduce(
+      const newFormItems = state.formItems.reduce<FormItemType[]>(
         (prevFormItems, currFormItem) => {
           const { id } = currFormItem;
 
@@ -74,7 +74,7 @@ export const reducer = (state: State, action: ActionType): State => {
             return [...prevFormItems, currFormItem];
           }
         },
-        [] as any
+        []
       );
 
       console.log(newFormItems);
