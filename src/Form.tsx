@@ -1,10 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useReducer } from "react";
 import styled from "styled-components";
 import { FormItem } from "./FormItem";
-import { ActionType, State } from "./types";
+import { ActionType, FormItemType, State } from "./types";
 
-const INITIAL_COUNTER = 0;
+const INITIAL_ID = 0;
+const INITIAL_COUNTER = INITIAL_ID + 1;
+const DEFAULT_TYPE = "email";
+
 const FormWrap = styled.form`
   display: flex;
   flex-direction: column;
@@ -18,18 +21,19 @@ const FormWrap = styled.form`
 const initialState: State = {
   formItems: [
     {
-      id: INITIAL_COUNTER,
+      id: INITIAL_ID,
       type: "email",
     },
-    {
+    /*     {
       id: INITIAL_COUNTER + 1,
       type: "email",
     },
     {
       id: INITIAL_COUNTER + 2,
       type: "email",
-    },
+    }, */
   ],
+  counter: INITIAL_COUNTER,
 };
 
 const getForm = (state: State) => {
@@ -46,9 +50,36 @@ export const reducer = (state: State, action: ActionType): State => {
       /**
        *  Element number below which need to add a new one?
        */
-      const index = action.value;
 
-      return state;
+      /**
+       * Need to find out which element is current
+       * Then insert after it new Form
+       *
+       */
+      const upperElementId = action.value;
+
+      const newFormItems = state.formItems.reduce(
+        (prevFormItems, currFormItem) => {
+          const { id } = currFormItem;
+
+          if (id === upperElementId) {
+            const newFormItem: FormItemType = {
+              id: state.counter,
+              type: currFormItem.type,
+              value: currFormItem.value,
+            };
+
+            return [...prevFormItems, currFormItem, newFormItem];
+          } else {
+            return [...prevFormItems, currFormItem];
+          }
+        },
+        [] as any
+      );
+
+      console.log(newFormItems);
+
+      return { ...state, formItems: newFormItems, counter: state.counter++ };
     }
     case "deleteFormItem": {
       /**
@@ -84,6 +115,7 @@ export const reducer = (state: State, action: ActionType): State => {
 
       return newState;
     }
+
     default: {
       return state;
     }
@@ -96,8 +128,7 @@ export const FormDispatch = React.createContext<React.Dispatch<ActionType>>(
 
 export const Form = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const currCounter = INITIAL_COUNTER + 1;
-  const counter = useRef(currCounter);
+
   return (
     <FormDispatch.Provider value={dispatch}>
       <FormWrap>{getForm(state)}</FormWrap>

@@ -1,5 +1,6 @@
 export type State = {
   formItems: FormItemType[];
+  counter: number;
 };
 
 export type FormItemType = {

@@ -78,7 +78,7 @@ export const FormItem = (props: FormItemPropsType) => {
       <Button
         onClick={(event) => {
           event.preventDefault();
-          dispatch({ type: "addFormItem", value: props.index });
+          dispatch({ type: "addFormItem", value: props.id });
         }}
       >
         +
