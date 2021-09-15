@@ -11,7 +11,7 @@ const DEFAULT_TYPE = "email";
 const FormWrap = styled.form`
   display: flex;
   flex-direction: column;
-  /*   justify-content: center; */
+
   min-height: 150px;
   width: 700px;
   background-color: #f5f5f5;
@@ -19,6 +19,17 @@ const FormWrap = styled.form`
   & > * {
     margin: 10px;
   }
+  & > *:last-child {
+    align-self: center;
+    margin: 40px 0 0 0;
+  }
+`;
+
+const SubmitButton = styled.button`
+  width: 100px;
+  height: 50px;
+  /*   font-size: 24px; */
+  border-radius: 5px;
 `;
 
 const initialState: State = {
@@ -160,7 +171,17 @@ export const Form = () => {
 
   return (
     <FormDispatch.Provider value={dispatch}>
-      <FormWrap>{getForm(state)}</FormWrap>
+      <FormWrap>
+        {getForm(state)}
+        <SubmitButton
+          type="submit"
+          onClick={(e) => {
+            e.preventDefault();
+          }}
+        >
+          send
+        </SubmitButton>
+      </FormWrap>
     </FormDispatch.Provider>
   );
 };
