@@ -2,7 +2,7 @@ import React from "react";
 import { useReducer } from "react";
 import styled from "styled-components";
 import { FormItem } from "./FormItem";
-import { ActionType, FormItemType, State } from "./types";
+import { ActionType, FormItemType, FormValuesType, State } from "./types";
 
 const INITIAL_ID = 0;
 const INITIAL_COUNTER = INITIAL_ID + 1;
@@ -28,7 +28,6 @@ const FormWrap = styled.form`
 const SubmitButton = styled.button`
   width: 100px;
   height: 50px;
-  /*   font-size: 24px; */
   border-radius: 5px;
 `;
 
@@ -39,14 +38,6 @@ const initialState: State = {
       type: DEFAULT_TYPE,
       value: "",
     },
-    /*     {
-      id: INITIAL_COUNTER + 1,
-      type: "email",
-    },
-    {
-      id: INITIAL_COUNTER + 2,
-      type: "email",
-    }, */
   ],
   counterId: INITIAL_COUNTER,
 };
@@ -166,6 +157,20 @@ export const FormDispatch = React.createContext<React.Dispatch<ActionType>>(
   undefined as any
 );
 
+const getFormValues = (state: State) => {
+  const formValues = state.formItemList.reduce<FormValuesType>(
+    (prevFormValues, currFormItem) => {
+      return {
+        type: [...prevFormValues.type, currFormItem.type],
+        value: [...prevFormValues.value, currFormItem.value],
+      };
+    },
+    { type: [], value: [] }
+  );
+
+  console.log("formValues", formValues);
+};
+
 export const Form = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -177,6 +182,7 @@ export const Form = () => {
           type="submit"
           onClick={(e) => {
             e.preventDefault();
+            getFormValues(state);
           }}
         >
           send
