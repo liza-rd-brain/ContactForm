@@ -10,6 +10,7 @@ export type FormItemType = {
 };
 
 export type SelectType = "email" | "phone" | "link";
+export type SelectListType = Array<SelectType>;
 
 export type ButtonControllerType = "addFormItem" | "deleteFormItem";
 

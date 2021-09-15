@@ -1,4 +1,9 @@
-import { ButtonControllerType, FormItemType, SelectType } from "./types";
+import {
+  ButtonControllerType,
+  FormItemType,
+  SelectListType,
+  SelectType,
+} from "./types";
 
 import styled from "styled-components";
 import { css } from "styled-components";
@@ -24,10 +29,17 @@ const TestElement = css`
 
 const Select = styled.select`
   ${TestElement}
+  text-transform: capitalize;
 `;
 
 const Input = styled.input`
   ${TestElement}
+`;
+
+const Option = styled.option`
+  /*   &::first-letter {
+    text-transform: uppercase;
+  } */
 `;
 
 const Button = styled.button`
@@ -37,8 +49,23 @@ const Button = styled.button`
   border-radius: 5px;
 `;
 
+// Take out as const-!?
+const selectList: SelectListType = ["email", "phone", "link"];
+
+const getSelectList = (type: SelectType) => {
+  return selectList.map((selectItem) => {
+    return (
+      <Option value={selectItem} key={selectItem}>
+        {selectItem}
+      </Option>
+    );
+  });
+};
+
 export const FormItem = (props: FormItemPropsType) => {
   const dispatch = useContext(FormDispatch);
+
+  const { id, type, value, index } = props;
 
   function getInputType(itemType: SelectType) {
     switch (itemType) {
@@ -60,25 +87,24 @@ export const FormItem = (props: FormItemPropsType) => {
   return (
     <FormItemWrap>
       <Select
+        value={type}
         onChange={(event) => {
           dispatch({
             type: "changeSelect",
             value: {
               type: event.target.value as SelectType,
-              index: props.index,
+              index: index,
             },
           });
         }}
       >
-        <option value="email">Email</option>
-        <option value="phone">Phone</option>
-        <option value="link">Link</option>
+        {getSelectList(type)}
       </Select>
-      <Input type={`${getInputType(props.type)}`} /* required */ />
+      <Input type={`${getInputType(type)}`} /* required */ />
       <Button
         onClick={(event) => {
           event.preventDefault();
-          dispatch({ type: "addFormItem", value: props.id });
+          dispatch({ type: "addFormItem", value: id });
         }}
       >
         +
@@ -86,7 +112,7 @@ export const FormItem = (props: FormItemPropsType) => {
       <Button
         onClick={(event) => {
           event.preventDefault();
-          dispatch({ type: "deleteFormItem", value: props.id });
+          dispatch({ type: "deleteFormItem", value: id });
         }}
       >
         -
