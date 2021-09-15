@@ -91,7 +91,7 @@ export const FormItem = (props: FormItemPropsType) => {
         onChange={(event) => {
           dispatch({
             type: "changeSelect",
-            value: {
+            payload: {
               type: event.target.value as SelectType,
               index: index,
             },
@@ -100,11 +100,19 @@ export const FormItem = (props: FormItemPropsType) => {
       >
         {getSelectList(type)}
       </Select>
-      <Input type={`${getInputType(type)}`} /* required */ />
+      <Input
+        type={`${getInputType(type)}`} /* required */
+        onChange={(event) => {
+          dispatch({
+            type: "changeInput",
+            payload: { value: event.target.value, id: id },
+          });
+        }}
+      />
       <Button
         onClick={(event) => {
           event.preventDefault();
-          dispatch({ type: "addFormItem", value: id });
+          dispatch({ type: "addFormItem", payload: id });
         }}
       >
         +
@@ -112,7 +120,7 @@ export const FormItem = (props: FormItemPropsType) => {
       <Button
         onClick={(event) => {
           event.preventDefault();
-          dispatch({ type: "deleteFormItem", value: id });
+          dispatch({ type: "deleteFormItem", payload: id });
         }}
       >
         -

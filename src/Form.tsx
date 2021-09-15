@@ -50,7 +50,7 @@ export const reducer = (state: State, action: ActionType): State => {
       /**
        *  Element number below which need to add a new one?
        */
-      const upperElementId = action.value;
+      const upperElementId = action.payload;
 
       const newformItemList = state.formItemList.reduce<FormItemType[]>(
         (prevFormItemList, currFormItem) => {
@@ -82,7 +82,7 @@ export const reducer = (state: State, action: ActionType): State => {
       /**
        *  Element number to be removed
        */
-      const currId = action.value;
+      const currId = action.payload;
 
       const newformItemList = state.formItemList.filter((formItem) => {
         const { id } = formItem;
@@ -97,7 +97,7 @@ export const reducer = (state: State, action: ActionType): State => {
 
     case "changeSelect": {
       //TODO: Need to change index to id for changing select
-      const { type: newType, index } = action.value;
+      const { type: newType, index } = action.payload;
 
       const newformItemList = state.formItemList.map(
         (formItemElem, itemIndex) => {
@@ -113,6 +113,24 @@ export const reducer = (state: State, action: ActionType): State => {
       };
 
       return newState;
+    }
+
+    case "changeInput": {
+      const { value: newValue, id: currId } = action.payload;
+
+      const newformItemList = state.formItemList.map((formItem) => {
+        const { id } = formItem;
+        if (id === currId) {
+          return { ...formItem, value: newValue };
+        } else return formItem;
+      });
+
+      console.log(newformItemList);
+
+      return {
+        ...state,
+        formItemList: newformItemList,
+      };
     }
 
     default: {

@@ -15,5 +15,6 @@ export type SelectListType = Array<SelectType>;
 export type ButtonControllerType = "addFormItem" | "deleteFormItem";
 
 export type ActionType =
-  | { type: ButtonControllerType; value: number }
-  | { type: "changeSelect"; value: { type: SelectType; index: number } };
+  | { type: ButtonControllerType; payload: number }
+  | { type: "changeSelect"; payload: { type: SelectType; index: number } }
+  | { type: "changeInput"; payload: { value: string; id: number } };
