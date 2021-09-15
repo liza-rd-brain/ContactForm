@@ -11,11 +11,14 @@ const DEFAULT_TYPE = "email";
 const FormWrap = styled.form`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  min-height: 200px;
+  /*   justify-content: center; */
+  min-height: 150px;
   width: 700px;
   background-color: #f5f5f5;
   padding: 50px;
+  & > * {
+    margin: 10px;
+  }
 `;
 
 const initialState: State = {
@@ -38,9 +41,18 @@ const initialState: State = {
 };
 
 const getForm = (state: State) => {
+  const canDeleteItem = state.formItemList.length > 1;
+
   return state.formItemList.map(({ id, type, value }, index) => {
     return (
-      <FormItem id={id} type={type} value={value} index={index} key={id} />
+      <FormItem
+        id={id}
+        type={type}
+        value={value}
+        index={index}
+        key={id}
+        canDeleteItem={canDeleteItem}
+      />
     );
   });
 };
@@ -98,6 +110,7 @@ export const reducer = (state: State, action: ActionType): State => {
 
     case "changeSelect": {
       //TODO: Need to change index to id for changing select
+      //TODO: Clear input after changing select?
       const { type: newType, index } = action.payload;
 
       const newformItemList = state.formItemList.map(

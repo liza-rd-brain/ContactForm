@@ -10,11 +10,14 @@ import { css } from "styled-components";
 import { useContext } from "react";
 import { FormDispatch } from "./Form";
 
-type FormItemPropsType = FormItemType & { index: number };
+type FormItemPropsType = FormItemType & {
+  index: number;
+  canDeleteItem: Boolean;
+};
 
 const FormItemWrap = styled.div`
   display: flex;
-  height: 100px;
+  /*   height: 100px; */
   border: 1px grey black;
   justify-content: space-between;
   align-items: center;
@@ -36,10 +39,12 @@ const Input = styled.input`
   ${TestElement}
 `;
 
-const Option = styled.option`
-  /*   &::first-letter {
-    text-transform: uppercase;
-  } */
+const Option = styled.option``;
+
+const ButtonWrap = styled.div`
+  width: 120px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Button = styled.button`
@@ -52,7 +57,7 @@ const Button = styled.button`
 // Take out as const-!?
 const selectList: SelectListType = ["email", "phone", "link"];
 
-const getSelectList = (type: SelectType) => {
+const getOptionList = (type: SelectType) => {
   return selectList.map((selectItem) => {
     return (
       <Option value={selectItem} key={selectItem}>
@@ -62,10 +67,19 @@ const getSelectList = (type: SelectType) => {
   });
 };
 
+/**
+ * Can copy when string is filled.
+ */
+const checkCanCopyItem = (value: string) => {
+  if (value.length > 0) {
+    return true;
+  } else return false;
+};
+
 export const FormItem = (props: FormItemPropsType) => {
   const dispatch = useContext(FormDispatch);
 
-  const { id, type, value, index } = props;
+  const { id, type, value, index, canDeleteItem } = props;
 
   function getInputType(itemType: SelectType) {
     switch (itemType) {
@@ -98,7 +112,7 @@ export const FormItem = (props: FormItemPropsType) => {
           });
         }}
       >
-        {getSelectList(type)}
+        {getOptionList(type)}
       </Select>
       <Input
         type={`${getInputType(type)}`} /* required */
@@ -110,22 +124,28 @@ export const FormItem = (props: FormItemPropsType) => {
           });
         }}
       />
-      <Button
-        onClick={(event) => {
-          event.preventDefault();
-          dispatch({ type: "addFormItem", payload: id });
-        }}
-      >
-        +
-      </Button>
-      <Button
-        onClick={(event) => {
-          event.preventDefault();
-          dispatch({ type: "deleteFormItem", payload: id });
-        }}
-      >
-        -
-      </Button>
+      <ButtonWrap>
+        {checkCanCopyItem(value) ? (
+          <Button
+            onClick={(event) => {
+              event.preventDefault();
+              dispatch({ type: "addFormItem", payload: id });
+            }}
+          >
+            +
+          </Button>
+        ) : null}
+        {canDeleteItem ? (
+          <Button
+            onClick={(event) => {
+              event.preventDefault();
+              dispatch({ type: "deleteFormItem", payload: id });
+            }}
+          >
+            -
+          </Button>
+        ) : null}
+      </ButtonWrap>
     </FormItemWrap>
   );
 };
