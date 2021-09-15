@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useReducer } from "react";
 import styled from "styled-components";
 import { FormItem } from "./FormItem";
 import { ActionType, State } from "./types";
 
+const INITIAL_COUNTER = 0;
 const FormWrap = styled.form`
   display: flex;
   flex-direction: column;
@@ -17,23 +18,17 @@ const FormWrap = styled.form`
 const initialState: State = {
   formItems: [
     {
-      type: "email",
-    },
-    {
-      type: "email",
-    },
-    {
-      type: "email",
-    },
-    {
+      id: INITIAL_COUNTER,
       type: "email",
     },
   ],
 };
 
 const getForm = (state: State) => {
-  return state.formItems.map(({ type, value }, index) => {
-    return <FormItem type={type} value={value} index={index} key={index} />;
+  return state.formItems.map(({ id, type, value }, index) => {
+    return (
+      <FormItem id={id} type={type} value={value} index={index} key={index} />
+    );
   });
 };
 
@@ -67,10 +62,10 @@ export const reducer = (state: State, action: ActionType): State => {
     case "changeSelect": {
       const { type: newType, index } = action.value;
 
-      const newFormItems = state.formItems.map(({ type, value }, itemIndex) => {
+      const newFormItems = state.formItems.map((formItemsElem, itemIndex) => {
         if (itemIndex === index) {
-          return { type: newType, value };
-        } else return { type, value };
+          return { ...formItemsElem, type: newType };
+        } else return formItemsElem;
       });
 
       const newState = {
@@ -92,13 +87,8 @@ export const FormDispatch = React.createContext<React.Dispatch<ActionType>>(
 
 export const Form = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  /*   useEffect(() => {
-    indexCounter.current = 0;
-    return () => {
-      indexCounter.current = 0;
-    };
-  }); */
+  const currCounter = INITIAL_COUNTER + 1;
+  const counter = useRef(currCounter);
   return (
     <FormDispatch.Provider value={dispatch}>
       <FormWrap>{getForm(state)}</FormWrap>

@@ -3,6 +3,7 @@ export type State = {
 };
 
 export type FormItemType = {
+  id: number;
   type: ItemsType;
   value?: string;
 };
