@@ -1,9 +1,4 @@
-import {
-  ButtonControllerType,
-  FormItemType,
-  SelectListType,
-  SelectType,
-} from "./types";
+import { FormItemType, SelectListType, SelectType } from "./types";
 
 import styled from "styled-components";
 import { css } from "styled-components";
@@ -127,8 +122,10 @@ export const FormItem = (props: FormItemPropsType) => {
       <ButtonWrap>
         {checkCanCopyItem(value) ? (
           <Button
+            type="button"
             onClick={(event) => {
               event.preventDefault();
+
               dispatch({ type: "addFormItem", payload: id });
             }}
           >
@@ -137,6 +134,7 @@ export const FormItem = (props: FormItemPropsType) => {
         ) : null}
         {canDeleteItem ? (
           <Button
+            type="button"
             onClick={(event) => {
               event.preventDefault();
               dispatch({ type: "deleteFormItem", payload: id });

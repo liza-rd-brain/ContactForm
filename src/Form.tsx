@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useReducer } from "react";
 import styled from "styled-components";
 import { FormItem } from "./FormItem";
@@ -25,7 +25,7 @@ const initialState: State = {
   formItemList: [
     {
       id: INITIAL_ID,
-      type: "email",
+      type: DEFAULT_TYPE,
       value: "",
     },
     /*     {
@@ -138,8 +138,6 @@ export const reducer = (state: State, action: ActionType): State => {
           return { ...formItem, value: newValue };
         } else return formItem;
       });
-
-      console.log(newformItemList);
 
       return {
         ...state,
