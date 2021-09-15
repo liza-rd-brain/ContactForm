@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useReducer } from "react";
 import styled from "styled-components";
 import { FormItem } from "./FormItem";
@@ -18,11 +18,15 @@ const initialState: State = {
   formItems: [
     {
       type: "email",
-      value: "test@test.com",
     },
     {
       type: "email",
-      value: "test@test.com",
+    },
+    {
+      type: "email",
+    },
+    {
+      type: "email",
     },
   ],
 };
@@ -36,14 +40,32 @@ const getForm = (state: State) => {
 export const reducer = (state: State, action: ActionType): State => {
   switch (action.type) {
     case "addFormItem": {
+      /**
+       *  Element number below which need to add a new one?
+       */
+      const index = action.value;
+
       return state;
     }
     case "deleteFormItem": {
-      return state;
+      /**
+       *  Element number to be removed
+       */
+      const index = action.value;
+
+      const newFormItems = state.formItems.filter((formItem, itemIndex) => {
+        return itemIndex !== index;
+      });
+
+      const newState = {
+        ...state,
+        formItems: newFormItems,
+      };
+
+      return newState;
     }
     case "changeSelect": {
       const { type: newType, index } = action.value;
-      console.log(state.formItems[index]);
 
       const newFormItems = state.formItems.map(({ type, value }, itemIndex) => {
         if (itemIndex === index) {
@@ -56,7 +78,6 @@ export const reducer = (state: State, action: ActionType): State => {
         formItems: newFormItems,
       };
 
-      console.log(newState);
       return newState;
     }
     default: {
@@ -72,6 +93,12 @@ export const FormDispatch = React.createContext<React.Dispatch<ActionType>>(
 export const Form = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  /*   useEffect(() => {
+    indexCounter.current = 0;
+    return () => {
+      indexCounter.current = 0;
+    };
+  }); */
   return (
     <FormDispatch.Provider value={dispatch}>
       <FormWrap>{getForm(state)}</FormWrap>

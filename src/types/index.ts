@@ -4,12 +4,13 @@ export type State = {
 
 export type FormItemType = {
   type: ItemsType;
-  value: string;
+  value?: string;
 };
 
 export type ItemsType = "email" | "phone" | "link";
 
+export type ButtonControllerType = "addFormItem" | "deleteFormItem";
+
 export type ActionType =
-  | { type: "addFormItem" }
-  | { type: "deleteFormItem" }
+  | { type: ButtonControllerType; value: number }
   | { type: "changeSelect"; value: { type: ItemsType; index: number } };
