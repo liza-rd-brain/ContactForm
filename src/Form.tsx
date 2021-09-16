@@ -1,22 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useReducer } from "react";
 import styled from "styled-components";
+import { AppDispatch } from "./App";
 import { FormItem } from "./FormItem";
 import {
   ActionType,
-  ArrayFormValuesType,
   FormItemType,
   FormItemValues,
   FormValuesType,
-  SelectType,
-  State,
+  FormState,
 } from "./types";
 
 const INITIAL_ID = 0;
 const INITIAL_COUNTER = INITIAL_ID + 1;
 const DEFAULT_TYPE = "email";
 
-const FormWrap = styled.form`
+const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
 
@@ -39,7 +38,7 @@ const SubmitButton = styled.button`
   border-radius: 5px;
 `;
 
-const initialState: State = {
+const initialState: FormState = {
   formItemList: [
     {
       id: INITIAL_ID,
@@ -50,7 +49,7 @@ const initialState: State = {
   counterId: INITIAL_COUNTER,
 };
 
-const getForm = (state: State) => {
+const getForm = (state: FormState) => {
   const canDeleteItem = state.formItemList.length > 1;
 
   return state.formItemList.map(({ id, type, value }, index) => {
@@ -67,12 +66,13 @@ const getForm = (state: State) => {
   });
 };
 
-export const reducer = (state: State, action: ActionType): State => {
+export const reducer = (state: FormState, action: ActionType): FormState => {
   switch (action.type) {
     case "addFormItem": {
       /**
        *  Element number below which need to add a new one?
        */
+      //TODO: use slice
       const upperElementId = action.payload;
 
       const newformItemList = state.formItemList.reduce<FormItemType[]>(
@@ -81,9 +81,10 @@ export const reducer = (state: State, action: ActionType): State => {
 
           if (id === upperElementId) {
             const newFormItem: FormItemType = {
+              ...currFormItem,
               id: state.counterId,
-              type: currFormItem.type,
-              value: currFormItem.value,
+              /*           type: currFormItem.type,
+              value: currFormItem.value, */
             };
 
             return [...prevFormItemList, currFormItem, newFormItem];
@@ -144,9 +145,12 @@ export const reducer = (state: State, action: ActionType): State => {
 
       const newformItemList = state.formItemList.map((formItem) => {
         const { id } = formItem;
+
         if (id === currId) {
           return { ...formItem, value: newValue };
-        } else return formItem;
+        } else {
+          return formItem;
+        }
       });
 
       return {
@@ -165,58 +169,26 @@ export const FormDispatch = React.createContext<React.Dispatch<ActionType>>(
   undefined as any
 );
 
-const getFormValues = (state: State) => {
-  const formValues = state.formItemList.reduce<FormValuesType>(
-    (prevFormValues, currFormItem) => {
-      return {
-        type: [...prevFormValues.type, currFormItem.type],
-        value: [...prevFormValues.value, currFormItem.value],
-      };
-    },
-    { type: [], value: [] }
-  );
-
-  console.log("formValues", formValues);
-
-  return formValues;
-};
-
-const convertArrayToObject = (formValues: FormValuesType) => {
-  const { type: typeList, value: valueList } = formValues;
-
-  const convertedArrayToObject = typeList.reduce<FormItemValues[]>(
-    (prevArray, itemType, index) => {
-      const newFormItem: FormItemValues = {
-        type: itemType,
-        value: valueList[index],
-      };
-
-      return [...prevArray, newFormItem];
-    },
-    []
-  );
-
-  console.log("convertedArrayToObject", convertedArrayToObject);
-};
-
 export const Form = () => {
+  const appDispatch = useContext(AppDispatch);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <FormDispatch.Provider value={dispatch}>
-      <FormWrap>
+      <FormContainer>
         {getForm(state)}
         <SubmitButton
           type="submit"
           onClick={(e) => {
             e.preventDefault();
-            const formValues = getFormValues(state);
-            convertArrayToObject(formValues);
+            appDispatch({ type: "sendForm", payload: state.formItemList });
+            /*        const formValues = getFormValues(state);
+            convertArrayToObject(formValues); */
           }}
         >
           send
         </SubmitButton>
-      </FormWrap>
+      </FormContainer>
     </FormDispatch.Provider>
   );
 };

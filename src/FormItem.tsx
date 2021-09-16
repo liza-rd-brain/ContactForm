@@ -49,11 +49,10 @@ const Button = styled.button`
   border-radius: 5px;
 `;
 
-// Take out as const-!?
-const selectList: SelectListType = ["email", "phone", "link"];
+const SELECT_LIST: SelectListType = ["email", "phone", "link"];
 
-const getOptionList = (type: SelectType) => {
-  return selectList.map((selectItem) => {
+const getOptionList = () => {
+  return SELECT_LIST.map((selectItem) => {
     return (
       <Option value={selectItem} key={selectItem}>
         {selectItem}
@@ -65,6 +64,7 @@ const getOptionList = (type: SelectType) => {
 /**
  * Can copy when string is filled.
  */
+//TODO: take out to Form!
 const checkCanCopyItem = (value: string) => {
   if (value.length > 0) {
     return true;
@@ -107,7 +107,7 @@ export const FormItem = (props: FormItemPropsType) => {
           });
         }}
       >
-        {getOptionList(type)}
+        {getOptionList()}
       </Select>
       <Input
         type={`${getInputType(type)}`} /* required */
