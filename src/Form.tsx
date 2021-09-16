@@ -53,6 +53,7 @@ const getForm = (state: FormState) => {
   const canDeleteItem = state.formItemList.length > 1;
 
   return state.formItemList.map(({ id, type, value }, index) => {
+    //TODO:bug
     const canCopyItem = value.length > 0;
 
     return (
@@ -71,34 +72,22 @@ const getForm = (state: FormState) => {
 export const reducer = (state: FormState, action: ActionType): FormState => {
   switch (action.type) {
     case "addFormItem": {
-      /**
-       *  Element number below which need to add a new one?
-       */
-      //TODO: use slice
       const upperElementId = action.payload;
+      const formItemList = state.formItemList;
 
-      console.log(state.formItemList);
-      const newformItemList = state.formItemList.reduce<FormItemType[]>(
-        (prevFormItemList, currFormItem) => {
-          const { id } = currFormItem;
+      const partBeforeNewItem = formItemList.slice(0, upperElementId + 1);
+      const partAfterNewItem = formItemList.slice(upperElementId + 1);
+      const newFormItem = {
+        ...formItemList[upperElementId],
+        id: state.counterId,
+      };
 
-          if (id === upperElementId) {
-            const newFormItem: FormItemType = {
-              ...currFormItem,
-              id: state.counterId,
-              /*           type: currFormItem.type,
-              value: currFormItem.value, */
-            };
+      const newformItemList = [
+        ...partBeforeNewItem,
+        newFormItem,
+        ...partAfterNewItem,
+      ];
 
-            return [...prevFormItemList, currFormItem, newFormItem];
-          } else {
-            return [...prevFormItemList, currFormItem];
-          }
-        },
-        []
-      );
-
-      console.log();
       return {
         ...state,
         formItemList: newformItemList,
@@ -107,9 +96,6 @@ export const reducer = (state: FormState, action: ActionType): FormState => {
     }
 
     case "deleteFormItem": {
-      /**
-       *  Element number to be removed
-       */
       const currId = action.payload;
 
       const newformItemList = state.formItemList.filter((formItem) => {
