@@ -53,6 +53,8 @@ const getForm = (state: FormState) => {
   const canDeleteItem = state.formItemList.length > 1;
 
   return state.formItemList.map(({ id, type, value }, index) => {
+    const canCopyItem = value.length > 0;
+
     return (
       <FormItem
         id={id}
@@ -61,6 +63,7 @@ const getForm = (state: FormState) => {
         index={index}
         key={id}
         canDeleteItem={canDeleteItem}
+        canCopyItem={canCopyItem}
       />
     );
   });
@@ -184,8 +187,6 @@ export const Form = () => {
           onClick={(e) => {
             e.preventDefault();
             appDispatch({ type: "sendForm", payload: state.formItemList });
-            /*        const formValues = getFormValues(state);
-            convertArrayToObject(formValues); */
           }}
         >
           submit

@@ -108,7 +108,6 @@ const initialState = {
   convertedValues: [],
 };
 
-//TODO:take out to App
 //TODO: Add generic type?
 const getFormValues = (formData: FormItemListType) => {
   const formValues = formData.reduce<FormValuesType>(

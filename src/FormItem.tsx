@@ -8,6 +8,7 @@ import { FormDispatch } from "./Form";
 type FormItemPropsType = FormItemType & {
   index: number;
   canDeleteItem: Boolean;
+  canCopyItem: Boolean;
 };
 
 const FormItemWrap = styled.div`
@@ -65,16 +66,11 @@ const getOptionList = () => {
  * Can copy when string is filled.
  */
 //TODO: take out to Form!
-const checkCanCopyItem = (value: string) => {
-  if (value.length > 0) {
-    return true;
-  } else return false;
-};
 
 export const FormItem = (props: FormItemPropsType) => {
   const dispatch = useContext(FormDispatch);
 
-  const { id, type, value, index, canDeleteItem } = props;
+  const { id, type, value, index, canDeleteItem, canCopyItem } = props;
 
   function getInputType(itemType: SelectType) {
     switch (itemType) {
@@ -120,7 +116,7 @@ export const FormItem = (props: FormItemPropsType) => {
         }}
       />
       <ButtonWrap>
-        {checkCanCopyItem(value) ? (
+        {canCopyItem ? (
           <Button
             type="button"
             onClick={(event) => {
