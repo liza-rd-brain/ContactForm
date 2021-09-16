@@ -53,12 +53,12 @@ const getForm = (state: FormState) => {
   const canDeleteItem = state.formItemList.length > 1;
 
   return state.formItemList.map(({ id, type, value }, index) => {
-    //TODO:bug
     const canCopyItem = value.length > 0;
 
     return (
       <FormItem
         id={id}
+        index={index}
         type={type}
         value={value}
         key={id}
@@ -72,13 +72,14 @@ const getForm = (state: FormState) => {
 export const reducer = (state: FormState, action: ActionType): FormState => {
   switch (action.type) {
     case "addFormItem": {
-      const upperElementId = action.payload;
+      const upperElementIndex = action.itemIndex;
       const formItemList = state.formItemList;
 
-      const partBeforeNewItem = formItemList.slice(0, upperElementId + 1);
-      const partAfterNewItem = formItemList.slice(upperElementId + 1);
+      const partBeforeNewItem = formItemList.slice(0, upperElementIndex + 1);
+      const partAfterNewItem = formItemList.slice(upperElementIndex + 1);
+
       const newFormItem = {
-        ...formItemList[upperElementId],
+        ...formItemList[upperElementIndex],
         id: state.counterId,
       };
 
@@ -96,8 +97,7 @@ export const reducer = (state: FormState, action: ActionType): FormState => {
     }
 
     case "deleteFormItem": {
-      const currId = action.payload;
-
+      const currId = action.itemId;
       const newformItemList = state.formItemList.filter((formItem) => {
         const { id } = formItem;
         return id !== currId;

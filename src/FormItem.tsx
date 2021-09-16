@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { FormDispatch } from "./Form";
 
 type FormItemPropsType = FormItemType & {
+  index: number;
   canDeleteItem: Boolean;
   canCopyItem: Boolean;
 };
@@ -64,7 +65,7 @@ const getOptionList = () => {
 export const FormItem = (props: FormItemPropsType) => {
   const dispatch = useContext(FormDispatch);
 
-  const { id, type, value, canDeleteItem, canCopyItem } = props;
+  const { id, index, type, value, canDeleteItem, canCopyItem } = props;
 
   function getInputType(itemType: SelectType) {
     switch (itemType) {
@@ -116,7 +117,7 @@ export const FormItem = (props: FormItemPropsType) => {
             onClick={(event) => {
               event.preventDefault();
 
-              dispatch({ type: "addFormItem", payload: id });
+              dispatch({ type: "addFormItem", itemIndex: index });
             }}
           >
             +
@@ -127,7 +128,7 @@ export const FormItem = (props: FormItemPropsType) => {
             type="button"
             onClick={(event) => {
               event.preventDefault();
-              dispatch({ type: "deleteFormItem", payload: id });
+              dispatch({ type: "deleteFormItem", itemId: id });
             }}
           >
             -
