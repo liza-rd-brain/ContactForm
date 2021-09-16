@@ -1,7 +1,15 @@
 export type FormItemListType = FormItemType[];
 
 export type AppState = {
-  formData: FormItemListType;
+  formValues: FormDataType;
+  convertedValues: FormItemValues[];
+};
+
+export type FormDataType = FormValuesType | null;
+
+export type FormValuesType = {
+  type: SelectType[];
+  value: string[];
 };
 
 export type FormState = {
@@ -22,11 +30,6 @@ export type FormItemValues = {
 
 export type ArrayFormValuesType = [SelectType[], string[]];
 
-export type FormValuesType = {
-  type: Array<SelectType>;
-  value: Array<string>;
-};
-
 export type SelectType = "email" | "phone" | "link";
 export type SelectListType = Array<SelectType>;
 
@@ -36,4 +39,7 @@ export type ActionType =
   | { type: ButtonControllerType; payload: number }
   | { type: "changeSelect"; payload: { type: SelectType; index: number } }
   | { type: "changeInput"; payload: { value: string; id: number } }
-  | { type: "sendForm"; payload: FormItemListType };
+  | { type: "sendForm"; payload: FormItemListType }
+  | {
+      type: "convertData";
+    };

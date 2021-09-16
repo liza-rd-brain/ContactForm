@@ -188,7 +188,7 @@ export const Form = () => {
             convertArrayToObject(formValues); */
           }}
         >
-          send
+          submit
         </SubmitButton>
       </FormContainer>
     </FormDispatch.Provider>

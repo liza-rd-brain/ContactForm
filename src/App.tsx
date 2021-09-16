@@ -2,14 +2,14 @@ import styled from "styled-components";
 import "./index.css";
 
 import { Form } from "./Form";
-import { useReducer } from "react";
+import { useContext, useReducer } from "react";
 import React from "react";
 import {
   ActionType,
   AppState,
+  FormDataType,
   FormItemListType,
   FormItemValues,
-  FormState,
   FormValuesType,
 } from "./types";
 
@@ -33,46 +33,79 @@ const MessageListWrap = styled.div`
 
 const MessageListHeader = styled.h3``;
 
-const FormData = styled.div`
+const FormData = styled.pre`
   width: 300px;
   min-height: 100px;
   border: 1px solid #000;
 `;
 
-const getFormData = (formData: FormItemListType) => {
-  if (formData.length > 0) {
-    const formDataObj = getFormValues(formData);
-    const formDataString = JSON.stringify(formDataObj, null, 2);
+const getFormValuesString = (formData: FormDataType) => {
+  if (formData) {
+    const formDataString = JSON.stringify(formData, null, 2);
     return formDataString;
   } else {
     return null;
   }
 };
 
+const getConvertedValuesString = (convertedValues: FormItemValues[]) => {
+  if (convertedValues.length > 0) {
+    const convertedDataString = JSON.stringify(convertedValues, null, 2);
+    return convertedDataString;
+  } else {
+    return null;
+  }
+};
+
 const MessageList = (props: AppState) => {
+  const appDispatch = useContext(AppDispatch);
+  const { formValues, convertedValues } = props;
   return (
     <MessageListWrap>
       <MessageListHeader>Результат заполнения формы</MessageListHeader>
-      {console.log(props)}
-      <FormData>{getFormData(props.formData)}</FormData>
-      <button type="button">convertArrayToObject</button>
-      <FormData> </FormData>
+
+      <FormData>{getFormValuesString(formValues)}</FormData>
+      <button
+        type="button"
+        onClick={() => {
+          appDispatch({
+            type: "convertData",
+          });
+        }}
+      >
+        convertArrayToObject
+      </button>
+      {<FormData> {getConvertedValuesString(convertedValues)}</FormData>}
     </MessageListWrap>
   );
 };
 
-export const reducer = (state: AppState, action: ActionType) => {
+export const reducer = (state: AppState, action: ActionType): AppState => {
   switch (action.type) {
     case "sendForm": {
-      console.log("action.payload", action.payload);
-      return { ...state, formData: action.payload };
+      const formData = action.payload;
+      const formValues = getFormValues(formData);
+
+      return { ...state, formValues };
+    }
+
+    case "convertData": {
+      const formVlaues = state.formValues;
+      const convertedValues = convertArrayToObject(formVlaues);
+
+      if (convertedValues) {
+        return { ...state, convertedValues };
+      } else {
+        return state;
+      }
     }
   }
   return state;
 };
 
 const initialState = {
-  formData: [],
+  formValues: null,
+  convertedValues: [],
 };
 
 //TODO:take out to App
@@ -88,27 +121,29 @@ const getFormValues = (formData: FormItemListType) => {
     { type: [], value: [] }
   );
 
-  console.log("formValues", formValues);
-
   return formValues;
 };
 
-const convertArrayToObject = (formValues: FormValuesType) => {
-  const { type: typeList, value: valueList } = formValues;
+const convertArrayToObject = (formValues: FormDataType) => {
+  if (formValues) {
+    const { type: typeList, value: valueList } = formValues;
 
-  const convertedArrayToObject = typeList.reduce<FormItemValues[]>(
-    (prevArray, itemType, index) => {
-      const newFormItem: FormItemValues = {
-        type: itemType,
-        value: valueList[index],
-      };
+    const convertedArrayToObject = typeList.reduce<FormItemValues[]>(
+      (prevArray, itemType, index) => {
+        const newFormItem: FormItemValues = {
+          type: itemType,
+          value: valueList[index],
+        };
 
-      return [...prevArray, newFormItem];
-    },
-    []
-  );
+        return [...prevArray, newFormItem];
+      },
+      []
+    );
 
-  console.log("convertedArrayToObject", convertedArrayToObject);
+    return convertedArrayToObject;
+  } else {
+    return null;
+  }
 };
 
 export const AppDispatch = React.createContext<React.Dispatch<ActionType>>(
@@ -121,7 +156,10 @@ export const App = () => {
     <AppDispatch.Provider value={appDispatch}>
       <Container>
         <Form />
-        <MessageList formData={state.formData} />
+        <MessageList
+          formValues={state.formValues}
+          convertedValues={state.convertedValues}
+        />
       </Container>
     </AppDispatch.Provider>
   );
