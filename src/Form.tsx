@@ -75,6 +75,7 @@ export const reducer = (state: FormState, action: ActionType): FormState => {
       //TODO: use slice
       const upperElementId = action.payload;
 
+      console.log(state.formItemList);
       const newformItemList = state.formItemList.reduce<FormItemType[]>(
         (prevFormItemList, currFormItem) => {
           const { id } = currFormItem;
@@ -95,10 +96,11 @@ export const reducer = (state: FormState, action: ActionType): FormState => {
         []
       );
 
+      console.log();
       return {
         ...state,
         formItemList: newformItemList,
-        counterId: state.counterId++,
+        counterId: state.counterId + 1,
       };
     }
 
