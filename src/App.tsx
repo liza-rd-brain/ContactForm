@@ -35,18 +35,26 @@ const MessageListHeader = styled.h3``;
 
 const FormData = styled.div`
   width: 300px;
-  height: 100px;
+  min-height: 100px;
   border: 1px solid #000;
 `;
 
-const MessageList = (props: AppState) => {
-  const formDataObj = getFormValues(props.formData);
-  const formDataString = JSON.stringify(formDataObj);
+const getFormData = (formData: FormItemListType) => {
+  if (formData.length > 0) {
+    const formDataObj = getFormValues(formData);
+    const formDataString = JSON.stringify(formDataObj, null, 2);
+    return formDataString;
+  } else {
+    return null;
+  }
+};
 
+const MessageList = (props: AppState) => {
   return (
     <MessageListWrap>
       <MessageListHeader>Результат заполнения формы</MessageListHeader>
-      <FormData>{formDataString}</FormData>
+      {console.log(props)}
+      <FormData>{getFormData(props.formData)}</FormData>
       <button type="button">convertArrayToObject</button>
       <FormData> </FormData>
     </MessageListWrap>
