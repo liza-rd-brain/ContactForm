@@ -86,7 +86,7 @@ export const reducer = (state: AppState, action: ActionType): AppState => {
       const formData = action.payload;
       const formValues = getFormValues(formData);
 
-      return { ...state, formValues };
+      return { ...state, formValues, convertedValues: [] };
     }
 
     case "convertData": {

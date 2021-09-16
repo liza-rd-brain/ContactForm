@@ -61,11 +61,6 @@ const getOptionList = () => {
   });
 };
 
-/**
- * Can copy when string is filled.
- */
-//TODO: take out to Form!
-
 export const FormItem = (props: FormItemPropsType) => {
   const dispatch = useContext(FormDispatch);
 
