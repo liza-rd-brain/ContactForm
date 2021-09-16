@@ -60,7 +60,6 @@ const getForm = (state: FormState) => {
         id={id}
         type={type}
         value={value}
-        index={index}
         key={id}
         canDeleteItem={canDeleteItem}
         canCopyItem={canCopyItem}
@@ -125,17 +124,14 @@ export const reducer = (state: FormState, action: ActionType): FormState => {
     }
 
     case "changeSelect": {
-      //TODO: Need to change index to id for changing select
       //TODO: Clear input after changing select?
-      const { type: newType, index } = action.payload;
+      const { type: newType, id } = action.payload;
 
-      const newformItemList = state.formItemList.map(
-        (formItemElem, itemIndex) => {
-          if (itemIndex === index) {
-            return { ...formItemElem, type: newType };
-          } else return formItemElem;
-        }
-      );
+      const newformItemList = state.formItemList.map((formItemElem) => {
+        if (formItemElem.id === id) {
+          return { ...formItemElem, type: newType };
+        } else return formItemElem;
+      });
 
       const newState = {
         ...state,
