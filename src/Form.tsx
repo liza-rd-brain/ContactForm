@@ -2,7 +2,15 @@ import React from "react";
 import { useReducer } from "react";
 import styled from "styled-components";
 import { FormItem } from "./FormItem";
-import { ActionType, FormItemType, FormValuesType, State } from "./types";
+import {
+  ActionType,
+  ArrayFormValuesType,
+  FormItemType,
+  FormItemValues,
+  FormValuesType,
+  SelectType,
+  State,
+} from "./types";
 
 const INITIAL_ID = 0;
 const INITIAL_COUNTER = INITIAL_ID + 1;
@@ -169,6 +177,26 @@ const getFormValues = (state: State) => {
   );
 
   console.log("formValues", formValues);
+
+  return formValues;
+};
+
+const convertArrayToObject = (formValues: FormValuesType) => {
+  const { type: typeList, value: valueList } = formValues;
+
+  const convertedArrayToObject = typeList.reduce<FormItemValues[]>(
+    (prevArray, itemType, index) => {
+      const newFormItem: FormItemValues = {
+        type: itemType,
+        value: valueList[index],
+      };
+
+      return [...prevArray, newFormItem];
+    },
+    []
+  );
+
+  console.log("convertedArrayToObject", convertedArrayToObject);
 };
 
 export const Form = () => {
@@ -182,7 +210,8 @@ export const Form = () => {
           type="submit"
           onClick={(e) => {
             e.preventDefault();
-            getFormValues(state);
+            const formValues = getFormValues(state);
+            convertArrayToObject(formValues);
           }}
         >
           send

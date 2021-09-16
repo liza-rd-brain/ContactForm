@@ -9,9 +9,16 @@ export type FormItemType = {
   value: string;
 };
 
+export type FormItemValues = {
+  type: SelectType;
+  value: string;
+};
+
+export type ArrayFormValuesType = [SelectType[], string[]];
+
 export type FormValuesType = {
   type: Array<SelectType>;
-  value: Array<String>;
+  value: Array<string>;
 };
 
 export type SelectType = "email" | "phone" | "link";
