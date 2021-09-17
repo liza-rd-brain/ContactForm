@@ -113,7 +113,7 @@ export const FormItem = (props: FormItemPropsType) => {
         {getOptionList()}
       </Select>
       <Input
-        type={`${getInputType(type)}`} /* required */
+        type={`${getInputType(type)}`}
         value={value}
         onChange={(event) => {
           dispatch({

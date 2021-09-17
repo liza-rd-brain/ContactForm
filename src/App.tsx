@@ -24,9 +24,22 @@ export const reducer = (state: AppState, action: ActionType): AppState => {
   switch (action.type) {
     case "sendForm": {
       const formData = action.payload;
-      const formValues = getFormValues(formData);
+      const hasEmptyField = formData.find((formitem) => {
+        const { value } = formitem;
+        return value.length <= 0;
+      });
 
-      return { ...state, formValues, convertedValues: [] };
+      if (hasEmptyField) {
+        return {
+          ...state,
+          message: "Форма не заполнена",
+          convertedValues: [],
+        };
+      } else {
+        const formValues = getFormValues(formData);
+
+        return { ...state, formValues, convertedValues: [] };
+      }
     }
 
     case "convertData": {
@@ -56,6 +69,7 @@ export const App = () => {
       <Container>
         <Form />
         <MessageList
+          message={state.message}
           formValues={state.formValues}
           convertedValues={state.convertedValues}
         />

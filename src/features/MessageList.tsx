@@ -61,13 +61,13 @@ const getConvertedValuesString = (
 
 export const MessageList = (props: AppState) => {
   const appDispatch = useContext(AppDispatch);
-  const { formValues, convertedValues } = props;
+  const { formValues, convertedValues, message } = props;
   return (
     <MessageListWrap>
       <MessageListContainer>
         <MessageListHeader>Результат заполнения формы</MessageListHeader>
 
-        <FormData>{getFormValuesString(formValues)}</FormData>
+        <FormData>{getFormValuesString(formValues) || message}</FormData>
         <ConvertButton
           type="button"
           onClick={() => {
