@@ -8,7 +8,7 @@ import {
   ActionType,
   AppState,
   FormDataType,
-  FormItemListType,
+  FormItemType,
   FormItemValues,
   FormValuesType,
 } from "./types";
@@ -48,7 +48,9 @@ const getFormValuesString = (formData: FormDataType) => {
   }
 };
 
-const getConvertedValuesString = (convertedValues: FormItemValues[]) => {
+const getConvertedValuesString = (
+  convertedValues: FormItemValues<string>[]
+) => {
   if (convertedValues.length > 0) {
     const convertedDataString = JSON.stringify(convertedValues, null, 2);
     return convertedDataString;
@@ -108,9 +110,8 @@ const initialState = {
   convertedValues: [],
 };
 
-//TODO: Add generic type?
-const getFormValues = (formData: FormItemListType) => {
-  const formValues = formData.reduce<FormValuesType>(
+const getFormValues = (formData: FormItemType<string>[]) => {
+  const formValues = formData.reduce<FormValuesType<string>>(
     (prevFormValues, currFormItem) => {
       return {
         type: [...prevFormValues.type, currFormItem.type],
@@ -127,9 +128,9 @@ const convertArrayToObject = (formValues: FormDataType) => {
   if (formValues) {
     const { type: typeList, value: valueList } = formValues;
 
-    const convertedArrayToObject = typeList.reduce<FormItemValues[]>(
+    const convertedArrayToObject = typeList.reduce<FormItemValues<string>[]>(
       (prevArray, itemType, index) => {
-        const newFormItem: FormItemValues = {
+        const newFormItem: FormItemValues<string> = {
           type: itemType,
           value: valueList[index],
         };

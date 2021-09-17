@@ -1,30 +1,32 @@
-export type FormItemListType = FormItemType[];
-
 export type AppState = {
   formValues: FormDataType;
-  convertedValues: FormItemValues[];
+  convertedValues: FormItemValues<string>[];
 };
 
-export type FormDataType = FormValuesType | null;
+export type FormDataType = FormValuesType<string> | null;
 
-export type FormValuesType = {
-  type: SelectType[];
+export type FormValuesType<T = SelectType> = {
+  type: T[];
   value: string[];
 };
 
 export type FormState = {
-  formItemList: FormItemListType;
+  formItemList: FormItemType[];
   counterId: number;
 };
 
-export type FormItemType = {
+export type FormItemType<T = SelectType> = {
   id: number;
-  type: SelectType;
+  type: T;
   value: string;
 };
 
-export type FormItemValues = {
-  type: SelectType;
+export type SelectTypeGeneric<T = SelectType> = {
+  type: T;
+};
+
+export type FormItemValues<T = SelectType> = {
+  type: T;
   value: string;
 };
 
@@ -40,7 +42,7 @@ export type ActionType =
   | { type: "deleteFormItem"; itemId: number }
   | { type: "changeSelect"; payload: { type: SelectType; id: number } }
   | { type: "changeInput"; payload: { value: string; id: number } }
-  | { type: "sendForm"; payload: FormItemListType }
+  | { type: "sendForm"; payload: FormItemType[] }
   | {
       type: "convertData";
     };
