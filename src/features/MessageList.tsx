@@ -29,6 +29,7 @@ const FormData = styled.pre`
   border: 2px solid #949494;
   border-radius: 3px;
   padding: 10px;
+  min-height: 100px;
 `;
 
 const ConvertButton = styled.button`
