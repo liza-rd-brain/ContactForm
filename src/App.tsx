@@ -13,7 +13,7 @@ import { AppDispatch } from "./AppDispatch";
 
 const Container = styled.div`
   display: flex;
-  margin: 150px auto 0 auto;
+  margin: 50px auto 0 auto;
   justify-content: space-around;
   & > * {
     margin: 0 30px;

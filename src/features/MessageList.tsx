@@ -70,6 +70,7 @@ export const MessageList = (props: AppState) => {
         <FormData>{message || getFormValuesString(formValues)}</FormData>
         <ConvertButton
           type="button"
+          disabled={Boolean(message)}
           onClick={() => {
             appDispatch({
               type: "convertData",
