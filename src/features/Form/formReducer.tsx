@@ -31,11 +31,12 @@ export const formReducer = (
     }
 
     case "deleteFormItem": {
-      const currId = action.itemId;
-      const newformItemList = state.formItemList.filter((formItem) => {
-        const { id } = formItem;
-        return id !== currId;
-      });
+      const currElIndex = action.itemIndex;
+      const newformItemList = state.formItemList.filter(
+        (formItem, itemIndex) => {
+          return itemIndex !== currElIndex;
+        }
+      );
 
       return {
         ...state,
@@ -45,13 +46,15 @@ export const formReducer = (
 
     case "changeSelect": {
       //TODO: Clear input after changing select?
-      const { type: newType, id } = action.payload;
+      const { type: newType, itemIndex } = action.payload;
 
-      const newformItemList = state.formItemList.map((formItemElem) => {
-        if (formItemElem.id === id) {
-          return { ...formItemElem, type: newType };
-        } else return formItemElem;
-      });
+      const newformItemList = state.formItemList.map(
+        (formItemElem, elemIndex) => {
+          if (elemIndex === itemIndex) {
+            return { ...formItemElem, type: newType };
+          } else return formItemElem;
+        }
+      );
 
       const newState = {
         ...state,
@@ -62,17 +65,17 @@ export const formReducer = (
     }
 
     case "changeInput": {
-      const { value: newValue, id: currId } = action.payload;
+      const { value: newValue, itemIndex } = action.payload;
 
-      const newformItemList = state.formItemList.map((formItem) => {
-        const { id } = formItem;
-
-        if (id === currId) {
-          return { ...formItem, value: newValue };
-        } else {
-          return formItem;
+      const newformItemList = state.formItemList.map(
+        (formItemElem, elemIndex) => {
+          if (elemIndex === itemIndex) {
+            return { ...formItemElem, value: newValue };
+          } else {
+            return formItemElem;
+          }
         }
-      });
+      );
 
       return {
         ...state,

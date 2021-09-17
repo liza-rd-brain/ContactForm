@@ -1,11 +1,16 @@
-import { FormItemType, SelectListType, SelectType } from "../../types";
+import {
+  FormItemType,
+  FormItemValues,
+  SelectListType,
+  SelectType,
+} from "../../types";
 
 import styled from "styled-components";
 import { css } from "styled-components";
 import { useContext } from "react";
 import { FormDispatch } from "./FormDispatch";
 
-type FormItemPropsType = FormItemType & {
+type FormItemPropsType = FormItemValues & {
   index: number;
   canDeleteItem: Boolean;
   canCopyItem: Boolean;
@@ -13,7 +18,6 @@ type FormItemPropsType = FormItemType & {
 
 const FormItemWrap = styled.div`
   display: flex;
-  /*   height: 100px; */
   border: 1px grey black;
   justify-content: space-between;
   align-items: center;
@@ -65,7 +69,7 @@ const getOptionList = () => {
 export const FormItem = (props: FormItemPropsType) => {
   const dispatch = useContext(FormDispatch);
 
-  const { id, index, type, value, canDeleteItem, canCopyItem } = props;
+  const { index, type, value, canDeleteItem, canCopyItem } = props;
 
   function getInputType(itemType: SelectType) {
     switch (itemType) {
@@ -93,7 +97,7 @@ export const FormItem = (props: FormItemPropsType) => {
             type: "changeSelect",
             payload: {
               type: event.target.value as SelectType,
-              id: id,
+              itemIndex: index,
             },
           });
         }}
@@ -106,7 +110,7 @@ export const FormItem = (props: FormItemPropsType) => {
         onChange={(event) => {
           dispatch({
             type: "changeInput",
-            payload: { value: event.target.value, id: id },
+            payload: { value: event.target.value, itemIndex: index },
           });
         }}
       />
@@ -128,7 +132,7 @@ export const FormItem = (props: FormItemPropsType) => {
             type="button"
             onClick={(event) => {
               event.preventDefault();
-              dispatch({ type: "deleteFormItem", itemId: id });
+              dispatch({ type: "deleteFormItem", itemIndex: index });
             }}
           >
             -

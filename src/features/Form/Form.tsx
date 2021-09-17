@@ -19,9 +19,11 @@ const FormContainer = styled.form`
   width: 700px;
   background-color: #f5f5f5;
   padding: 50px;
+
   & > * {
     margin: 10px;
   }
+
   & > *:last-child {
     align-self: center;
     margin: 40px 0 0 0;
@@ -53,7 +55,6 @@ const getForm = (state: FormState) => {
 
     return (
       <FormItem
-        id={id}
         index={index}
         type={type}
         value={value}
