@@ -1,9 +1,9 @@
-import { FormItemType, SelectListType, SelectType } from "./types";
+import { FormItemType, SelectListType, SelectType } from "../../types";
 
 import styled from "styled-components";
 import { css } from "styled-components";
 import { useContext } from "react";
-import { FormDispatch } from "./Form";
+import { FormDispatch } from "./FormDispatch";
 
 type FormItemPropsType = FormItemType & {
   index: number;
