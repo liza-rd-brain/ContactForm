@@ -8,18 +8,34 @@ import { AppState, FormDataType, FormItemValues } from "../types";
 const MessageListWrap = styled.div`
   display: flex;
   align-items: center;
-  /*   justify-content: center; */
   flex-direction: column;
-  width: 400px;
-  border: 1px solid #000;
 `;
 
-const MessageListHeader = styled.h3``;
+const MessageListContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 400px;
+  border: 3px solid #949494;
+  border-radius: 3px;
+`;
+
+const MessageListHeader = styled.h3`
+  color: #4b4b4b;
+`;
 
 const FormData = styled.pre`
   width: 300px;
-  min-height: 100px;
-  border: 1px solid #000;
+  border: 2px solid #949494;
+  border-radius: 3px;
+  padding: 10px;
+`;
+
+const ConvertButton = styled.button`
+  border-color: #949494;
+  border-radius: 5px;
+  color: #4b4b4b;
+  padding: 10px;
 `;
 
 const getFormValuesString = (formData: FormDataType) => {
@@ -47,20 +63,22 @@ export const MessageList = (props: AppState) => {
   const { formValues, convertedValues } = props;
   return (
     <MessageListWrap>
-      <MessageListHeader>Результат заполнения формы</MessageListHeader>
+      <MessageListContainer>
+        <MessageListHeader>Результат заполнения формы</MessageListHeader>
 
-      <FormData>{getFormValuesString(formValues)}</FormData>
-      <button
-        type="button"
-        onClick={() => {
-          appDispatch({
-            type: "convertData",
-          });
-        }}
-      >
-        convertArrayToObject
-      </button>
-      {<FormData> {getConvertedValuesString(convertedValues)}</FormData>}
+        <FormData>{getFormValuesString(formValues)}</FormData>
+        <ConvertButton
+          type="button"
+          onClick={() => {
+            appDispatch({
+              type: "convertData",
+            });
+          }}
+        >
+          convertArrayToObject
+        </ConvertButton>
+        {<FormData> {getConvertedValuesString(convertedValues)}</FormData>}
+      </MessageListContainer>
     </MessageListWrap>
   );
 };

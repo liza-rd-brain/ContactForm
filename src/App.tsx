@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
 import "./index.css";
 
 import { ActionType, AppState } from "./types";

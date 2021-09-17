@@ -16,7 +16,7 @@ const FormContainer = styled.form`
   flex-direction: column;
 
   min-height: 150px;
-  width: 700px;
+  width: 800px;
   background-color: #f5f5f5;
   padding: 50px;
 
@@ -27,6 +27,7 @@ const FormContainer = styled.form`
   & > *:last-child {
     align-self: center;
     margin: 40px 0 0 0;
+    justify-content: flex-end;
   }
 `;
 

@@ -1,9 +1,4 @@
-import {
-  FormItemType,
-  FormItemValues,
-  SelectListType,
-  SelectType,
-} from "../../types";
+import { FormItemValues, SelectListType, SelectType } from "../../types";
 
 import styled from "styled-components";
 import { css } from "styled-components";
@@ -23,20 +18,31 @@ const FormItemWrap = styled.div`
   align-items: center;
 `;
 
-const TestElement = css`
+const CommonFormElement = css`
   display: flex;
-  width: 250px;
+  width: 300px;
   height: 50px;
-  border: 1px solid black;
+  border: 2px solid #949494;
+  border-radius: 4px;
+  color: #4b4b4b;
+  padding: 0 1em;
+  &:focus,
+  &:focus-visible {
+    border-color: #949494;
+  }
 `;
 
 const Select = styled.select`
-  ${TestElement}
+  ${CommonFormElement}
   text-transform: capitalize;
+  appearance: none;
+  display: list-item;
+
+  user-select: none;
 `;
 
 const Input = styled.input`
-  ${TestElement}
+  ${CommonFormElement}
 `;
 
 const Option = styled.option``;
@@ -51,7 +57,9 @@ const Button = styled.button`
   width: 50px;
   height: 50px;
   font-size: 24px;
+  border-color: #949494;
   border-radius: 5px;
+  color: #4b4b4b;
 `;
 
 const SELECT_LIST: SelectListType = ["email", "phone", "link"];
@@ -119,8 +127,6 @@ export const FormItem = (props: FormItemPropsType) => {
           <Button
             type="button"
             onClick={(event) => {
-              event.preventDefault();
-
               dispatch({ type: "addFormItem", itemIndex: index });
             }}
           >
@@ -131,7 +137,6 @@ export const FormItem = (props: FormItemPropsType) => {
           <Button
             type="button"
             onClick={(event) => {
-              event.preventDefault();
               dispatch({ type: "deleteFormItem", itemIndex: index });
             }}
           >
