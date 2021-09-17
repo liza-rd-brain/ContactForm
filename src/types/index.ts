@@ -1,7 +1,7 @@
 export type AppState = {
   formValues: FormDataType;
   convertedValues: FormItemValues<string>[];
-  message?: string;
+  message?: string | null;
 };
 
 export type FormDataType = FormValuesType<string> | null;

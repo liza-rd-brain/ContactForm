@@ -67,7 +67,7 @@ export const MessageList = (props: AppState) => {
       <MessageListContainer>
         <MessageListHeader>Результат заполнения формы</MessageListHeader>
 
-        <FormData>{getFormValuesString(formValues) || message}</FormData>
+        <FormData>{message || getFormValuesString(formValues)}</FormData>
         <ConvertButton
           type="button"
           onClick={() => {

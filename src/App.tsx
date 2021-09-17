@@ -38,7 +38,7 @@ export const reducer = (state: AppState, action: ActionType): AppState => {
       } else {
         const formValues = getFormValues(formData);
 
-        return { ...state, formValues, convertedValues: [] };
+        return { ...state, formValues, convertedValues: [], message: null };
       }
     }
 
